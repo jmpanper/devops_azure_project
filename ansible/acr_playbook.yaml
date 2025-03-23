@@ -23,3 +23,31 @@
   	- name: Pull Nginx image
   		containers.podman.podman_image:
   			name: "docker.io/nginx"
+	
+	- name: Pull Redis image
+	  	containers.podman.podman_image:
+			name: "mcr.microsoft.com/oss/bitnami/redis"
+			tag: "6.0.8"
+	
+	- name: Pull Azure-Vote-front image
+	  	containers.podman.podman_image:
+			name: "mcr.microsoft.com/azuredocs/azure-vote-front"
+			tag: "v1"
+
+	- name: Push Nginx image to ACR
+		containers.podman.podman_image:
+			name: "{{ acr_name }}/nginx/nginx"
+			tag: "casopractico2"
+			push: yes
+
+	- name: Push Redis image to ACR
+		containers.podman.podman_image:
+			name: "{{ acr_name }}/redis/redis"
+			tag: "casopractico2"
+			push: yes
+
+	- name: Push Azure-Vote-Front image to ACR
+		containers.podman.podman_image:
+			name: "{{ acr_name }}/front/azure-vote-front"
+			tag: "casopractico2"
+			push: yes
