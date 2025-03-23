@@ -10,9 +10,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   location            = azurerm_resource_group.rg.location
   size                = var.vm_size
   admin_username      = var.ssh_user
-  network_interface_ids = [
-    azurerm_network_interface.nic_vm.id,
-  ]
+  network_interface_ids = [azurerm_network_interface.nic_vm.id,]
   dissable_password_authentication = true
 
   admin_ssh_key {
@@ -57,9 +55,9 @@ resource "azurerm_kubernetes_cluster" "aks"{
   }
 }
 
-resource "azure_role_assignment" "ra" {
+resource "azurerm_role_assignment" "ra" {
   principal_id = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
     role_definition_name    = "AcrPull"
-    scope                   = azure_container_registry.acr.id
+    scope                   = azurerm_container_registry.acr.id
     skip_service_principal_aad_check = true 
 }
