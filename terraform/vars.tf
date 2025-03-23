@@ -28,13 +28,13 @@ variable "ssh_user" {
   default = "adminuser"
 }
 
-ouput "kube_config" {
+output "kube_config" {
   value = "azurerm_kubernetes_cluster.aks.kube_config_raw"
   description = "Fichero de configuracion para conectar al Cluster Kubernetes"
   sensitive = true
 }
 
-ouput "acr_admin_password" {
+output "acr_admin_password" {
   value = azurerm_container_registry.acr.admin_password
   description = "ACR admin password to log in"
   seitive = true
