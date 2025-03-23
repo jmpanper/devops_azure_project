@@ -30,6 +30,6 @@ resource "azurerm_public_ip" "pip" {
 	name = "jmppcp2_pip"
 	resource_group_name = azurerm_resource_group.rg.name
 	location = azurerm_resource_group.rg.location
-	allocatiion_nethod = "Dynamic"
+	allocation_method = "Dynamic"
 	sku = "Basic"
 }

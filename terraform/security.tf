@@ -28,7 +28,7 @@ resource "azurerm_network_security_group" "nsg" {
 		destination_address_prefix = "*"
   	}
 }
-resource "azurerm_network_inteface_security_group_association" "nicnsga" {
+resource "azurerm_network_interface_security_group_association" "nicnsga" {
 	network_interface_id 		= azurerm_network_interface.nic.id
 	network_security_group_id 	= azurerm_network_security_group.nsg.id
 }

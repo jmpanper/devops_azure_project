@@ -3,14 +3,14 @@ resource "azurerm_resource_group" "rg" {
 	location = var.location
 }
 
-resource "azurerm_linux_virtual_machine" "vm" {
-  name                = "jmppcp2_vm"
+resource "azurerm_linux_virtual_machine" "lvm" {
+  name                = "jmppcp2_ubuntuserver_lvm"
   computer_name       = "jmppcp2-ubuntuserver" 
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = var.vm_size
   admin_username      = var.ssh_user
-  network_interface_ids = [azurerm_network_interface.nic_vm.id,]
+  network_interface_ids = [azurerm_network_interface.nic.id,]
   dissable_password_authentication = true
 
   admin_ssh_key {
