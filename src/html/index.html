@@ -3,50 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historia de DevOps</title>
+    <title>Slot Machine Service</title>
     <link rel="stylesheet" href=".\styles\styles.css">
 </head>
 <body>
     <header>
-        <h1>Historia de DevOps</h1>
+        <h1>Slot Machine</h1>
     </header>
     <main>
         <section>
-            <h2>¿Qué es DevOps?</h2>
             <p>
-                DevOps es una cultura, metodología y práctica de ingeniería de software cuyo objetivo es unificar el desarrollo de software (Dev) y la operación del software (Ops) para acelerar el lanzamiento de los proyectos y el aporte de valor de estos. La principal característica del movimiento DevOps es defender enérgicamente la automatización y el monitoreo en todos los pasos de la construcción del software, desde la integración, las pruebas, la liberación hasta la implementación y la gestión de la infraestructura.
-            </p>
-        </section>
-        <section>
-            <h2>Orígenes de DevOps</h2>
-            <p>
-                El término DevOps fue acuñado por Patrick Debois en 2009, quien se inspiró en las conferencias de Agile y en la necesidad de una mejor colaboración entre los equipos de desarrollo y operaciones. La primera conferencia sobre DevOps, llamada "DevOps Days", se llevó a cabo en Bélgica en 2009, y desde entonces ha ganado popularidad en la industria del software.
-            </p>
-        </section>
-        <section>
-            <h2>Principios de DevOps</h2>
-            <ul>
-                <li>Colaboración y comunicación entre equipos de desarrollo y operaciones.</li>
-                <li>Automatización de procesos de integración y despliegue continuo.</li>
-                <li>Monitoreo continuo y retroalimentación rápida.</li>
-                <li>Infraestructura como código.</li>
-            </ul>
-        </section>
-        <section>
-            <h2>Beneficios de DevOps</h2>
-            <p>
-                DevOps permite a las organizaciones entregar aplicaciones y servicios a alta velocidad, mejorando la calidad del software y reduciendo el tiempo de comercialización. Además, fomenta una cultura de colaboración y responsabilidad compartida entre los equipos.
-            </p>
-        </section>
-        <section>
-            <br>
-            <br>
-            <br>
-        </section>
+               Esta máquina tragaperras se ha desarrollado únicamente con fines de formación. Yo no apoyo el juego de ninguna manera, ni animo a los juegos de azar. Si lo hace, asegúrese de ganar o jugar con seguridad.
 
+                El proyecto actualmente tiene un script principal, donde toda la lógica de la máquina tragaperras está codificada. Se trata de una simple máquina tragaperras ejecutada en terminal que utiliza un conjunto de posibles caracteres como símbolos, generando los patrones ganadores utilizando valores aleatorios y escogiendo los valores de los caracteres de un conjunto.
+
+            </p>
+        </section>
+        <section>
+            <h2> A jugar!</h2>
+            <p>
+               El balance inicial son 100$
+               <form id="game-form">
+                <label for="bet">Apuesta por línea:</label>
+                <input type="number" id="bet" name="bet" min="1" max="100" required><br><br>
+        
+                <label for="lines">Número de líneas (1-3):</label>
+                <input type="number" id="lines" name="lines" min="1" max="3" required><br><br>
+        
+                <label for="balance">Saldo actual:</label>
+                <input type="number" id="balance" name="balance" value="100" readonly><br><br>
+        
+                <button type="submit">Jugar</button>
+            </form>
+        
+            <div id="result"></div>
+        
+            <script>
+                document.getElementById("game-form").addEventListener("submit", function(event) {
+                    event.preventDefault();
+        
+                    let bet = document.getElementById("bet").value;
+                    let lines = document.getElementById("lines").value;
+                    let balance = document.getElementById("balance").value;
+        
+                    fetch("/play", {
+                        method: "POST",
+                        body: new URLSearchParams({
+                            'bet': bet,
+                            'lines': lines,
+                            'balance': balance
+                        }),
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("result").innerHTML = `<h2>Resultado:</h2><pre>${data.result}</pre><h3>Saldo: ${data.balance}$</h3>`;
+                        document.getElementById("balance").value = data.balance;
+                    });
+                });
+            </script>
+            </p>
+            <br>
+            <br>
+            <br>
+            <br>
+        </section>
     </main>
     <footer>
-        <p>Información basada en <a href="https://es.wikipedia.org/wiki/DevOps" target="_blank">Wikipedia</a></p>
+        <p>Aplicación basada en <a href="https://github.com/jmpanper/Slot-Machine" target="_blank">un proyecto didáctico personal</a></p>
         <p>José Miguel Panadero Pérez 2025</p>
     </footer>
 </body>

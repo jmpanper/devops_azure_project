@@ -1,0 +1,25 @@
+---
+- name: Push container images to registry
+  hosts: localhost
+  become: true
+
+  vars:
+  	acr_name: "jmppcp2acr.azurecr.io"
+  	acr_username: "jmppcp2acr"
+
+  tasks: 
+  	- name: Ensure Podman intallation
+  	  ansible.built.apt:
+  	  name: podman
+  	  update_cache: yes
+  	  state: present
+
+  	- name: Login into ACR
+  	containers.podman.podman_login:
+  	registry: "{{acr_name}}"
+  	username: "{{acr_username}}"
+  	password: "{{acr_password}}"
+
+  	- name: Pull Nginx image
+  		containers.podman.podman_image:
+  			name: "docker.io/nginx"
