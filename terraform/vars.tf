@@ -37,7 +37,7 @@ output "kube_config" {
 output "acr_admin_password" {
   value = azurerm_container_registry.acr.admin_password
   description = "ACR admin password to log in"
-  seitive = true
+  sensitive = true
 }
 
 output "vm_public_ip" {
