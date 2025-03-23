@@ -18,11 +18,11 @@ resource "azurerm_network_interface" "nic" {
 	resource_group_name = azurerm_resource_group.rg.name
 
 		ip_configuration {
-		name = "jmmppcp2_ipconf"
-		subnet_id = azurerm_subnet.sn.id
-		private_ip_address_allocation = "Static"
-		private_ip_address = "10.0.1.10"
-		public_ip_address_id = azurerm_public_ip.pip.id
+			name = "jmmppcp2_ipconf"
+			subnet_id = azurerm_subnet.sn.id
+			private_ip_address_allocation = "Static"
+			private_ip_address = "10.0.1.10"
+			public_ip_address_id = azurerm_public_ip.pip.id
 	}
 }
 

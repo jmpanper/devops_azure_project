@@ -29,7 +29,7 @@ variable "ssh_user" {
 }
 
 output "kube_config" {
-  value = "azurerm_kubernetes_cluster.aks.kube_config_raw"
+  value = azurerm_kubernetes_cluster.aks.kube_config_raw
   description = "Fichero de configuracion para conectar al Cluster Kubernetes"
   sensitive = true
 }
