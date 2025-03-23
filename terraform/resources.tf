@@ -11,7 +11,7 @@ resource "azurerm_linux_virtual_machine" "lvm" {
   size                = var.vm_size
   admin_username      = var.ssh_user
   network_interface_ids = [azurerm_network_interface.nic.id,]
-  dissable_password_authentication = true
+  disable_password_authentication = true
 
   admin_ssh_key {
   	username          = var.ssh_user
@@ -19,13 +19,14 @@ resource "azurerm_linux_virtual_machine" "lvm" {
   }
   
   os_disk {
-  	catching             = "ReadWrite"
+  	caching             = "ReadWrite"
   	storage_account_type = "Standard_LRS"
   }
 
   source_image_reference {
   	publisher         = "Canonical"
   	offer             = "001-com-ubuntu-server-jammy"
+    sku               = "22_04-lts"
   	version           = "latest"
   }
 }
