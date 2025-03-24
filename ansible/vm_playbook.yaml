@@ -1,8 +1,9 @@
-- name: Deploy Nginx container with podman
-  host: ubuntuserver_vm
+---
+- name: Deploy Nginx Container with podman
+  hosts: ubuntuserver_vm
   become: true
   vars:
-  	acr_name: "jmppcp2.azure.io"
+    acr_name: "jmppcp2acr.azure.io"
     acr_username: "jmppcp2acr"
     nginx_image: "nginx/nginx:casopractico2"
   tasks:
@@ -14,18 +15,18 @@
 
     - name: Login to ACR
       containers.podman.podman_login:
-       registry: "{{ acr_name }}"
-       username: "{{ acr_username }}"
-       password: "{{ acr_password }}"
+        registry: "{{ acr_name }}"
+        username: "{{ acr_username }}"
+        password: "{{ acr_password }}"
 
     - name: Pull Nginx image from ACR
-       containers.podman.podman_image:
-       name: "{{ acr_name }}/{{ nginx_image }}"
+      containers.podman.podman_image:
+        name: "{{ acr_name }}/{{ nginx_image }}"
 
     - name: Run Nginx container
-       containers.podman.podman_container:
+      containers.podman.podman_container:
         name: nginx
-        image: "{{ acr_name }}{{ nginx_image }}"
+        image: "{{ acr_name }}/{{ nginx_image }}"
         state: started
         ports:
           - "80:80"

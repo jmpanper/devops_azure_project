@@ -1,37 +1,39 @@
-- name: Deploy containers to AKS
+---
+- name: Deploy Containers to AKS
   hosts: localhost
-  tasks: 
-  	- name: Set Kubernetes config
-  	  set_fact:
-  	  	kube_config: "/home/josemi_pp/.kube/kubeconfig"
+  tasks:
+    - name: Set Kubernetes config
+      set_fact:
+        kube_config: "/home/josemi_pp/.kube/kubeconfig"
 
     - name: Create redis deployments
       kubernetes.core.k8s:
         kubeconfig: "{{ kube_config }}"
-        definition: 
+        definition:
           apiVersion: apps/v1
           kind: Deployment
-          metadata: 
+          metadata:
             name: redis
             namespace: default
           spec:
-              replicas: 1
-              selector:
-                matchLabels:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: redis
+            template:
+              metadata:
+                labels:
                   app: redis
-              template:
-                metadata:
-                  labels:
-                    app: redis
-                spec:
-                  containers:
-                    - name: redis
-                      image: jmppcp2acr.azurecr.io/redis/redis:casopractico2
-                      ports:
-                        - containerPort: 6379
-                      env: 
-                        - name: ALLOW_EMPTY_PASSWORD
-                          value: "yes"
+              spec:
+                containers:
+                  - name: redis
+                    image: jmppcp2acr.azurecr.io/redis/redis:casopractico2
+                    ports:
+                      - containerPort: 6379
+                    env:
+                      - name: ALLOW_EMPTY_PASSWORD
+                        value: "yes"
+
     - name: Create Redis Service
       kubernetes.core.k8s:
         kubeconfig: "{{ kube_config }}"
@@ -43,49 +45,50 @@
             namespace: default
           spec:
             ports:
-              - ports: 6379
-              selector:
-                app: redis
+              - port: 6379
+            selector:
+              app: redis
 
     - name: Create Azure Vote Front Deployment
       kubernetes.core.k8s:
         kubeconfig: "{{ kube_config }}"
         definition:
-            apiVersion: apps/v1
-            kind: Deployment
-            metadata: 
-              name: azure-vote-front
-              namespace: default
-            spec:
-              replicas: 2
-              selector:
-                matchLabels:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: azure-vote-front
+            namespace: default
+          spec:
+            replicas: 2
+            selector:
+              matchLabels:
+                app: azure-vote-front
+            template:
+              metadata:
+                labels:
                   app: azure-vote-front
-              template: 
-                metadata:
-                  labels:
-                    app: azure-vote-front
-                spec:
-                  containers:
-                    - name: azure-vote-front
-                      image: jmppcp2acr.azurecr.io/front/azure-vote-front:casopractico2
-                      ports:
-                        - containerPort: 80
-                      env:
-                        - name: REDIS
-                          value: redis
-    -name: Create Azure Vote Front Service
-     kubernetes.core.k8s:
+              spec:
+                containers:
+                  - name: azure-vote-front
+                    image: jmppcp2acr.azurecr.io/front/azure-vote-front:casopractico2
+                    ports:
+                      - containerPort: 80
+                    env:
+                      - name: REDIS
+                        value: redis
+
+    - name: Create Azure Vote Front Service
+      kubernetes.core.k8s:
         kubeconfig: "{{ kube_config }}"
         definition:
-            apiVersion: apps/v1
-            kind: Service
-            metadata: 
-              name: azure-vote-front
-              namespace: default
-            spec:
-              type: LoadBalancer
-              ports:
-                - port: 80
-              selector:
-                app: azure-vote-front
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: azure-vote-front
+            namespace: default
+          spec:
+            type: LoadBalancer
+            ports:
+              - port: 80
+            selector:
+              app: azure-vote-front
